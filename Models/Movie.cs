@@ -19,6 +19,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Models {
 
         public String? Director { get; set; }
 
+        public String? Description { get; set; }
+
         public int? Budget { get; set; }
 
         public int? Fees { get; set; }
@@ -26,7 +28,6 @@ namespace webNET_Hits_backend_aspnet_project_1.Models {
         public int? AgeLimit { get; set; }
 
         public ICollection<Review> Reviews { get; set; }
-
         public ICollection<User> UserFavorites { get; set; }
         public ICollection<Genre> MovieGenres { get; set; }
 

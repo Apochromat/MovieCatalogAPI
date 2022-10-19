@@ -4,7 +4,9 @@
         public String? name { get; set; }
         public String? poster { get; set; }
         public int year { get; set; }
+        public int time { get; set; }
         public String? country { get; set; }
+        public String? description { get; set; }
         public ICollection<GenreModel>? genres { get; set; } = new List<GenreModel>();
         public ICollection<ReviewShortModel>? reviews { get; set; } = new List<ReviewShortModel>();
         public String? tagline { get; set; }
