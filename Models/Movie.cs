@@ -5,15 +5,15 @@ namespace webNET_Hits_backend_aspnet_project_1.Models {
         [Key]
         public Guid MovieId { get; set; } = Guid.NewGuid();
 
-        public String? Name { get; set; }
+        public String Name { get; set; }
 
         public String? PosterLink { get; set; }
 
-        public int Year { get; set; }
+        public int? Year { get; set; }
 
         public String? Country { get; set; }
 
-        public int Time { get; set; }
+        public int? Time { get; set; }
 
         public String? Tagline { get; set; }
 
@@ -27,9 +27,9 @@ namespace webNET_Hits_backend_aspnet_project_1.Models {
 
         public int? AgeLimit { get; set; }
 
-        public ICollection<Review> Reviews { get; set; }
-        public ICollection<User> UserFavorites { get; set; }
-        public ICollection<Genre> MovieGenres { get; set; }
+        public ICollection<Review> Reviews { get; set; } = new List<Review>();
+        public ICollection<User> UserFavorites { get; set; } = new List<User>();
+        public ICollection<Genre> MovieGenres { get; set; } = new List<Genre>();
 
 
     }
