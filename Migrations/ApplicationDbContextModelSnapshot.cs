@@ -31,7 +31,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Migrations
 
                     b.HasIndex("MovieGenresMovieId");
 
-                    b.ToTable("GenreMovie");
+                    b.ToTable("GenreMovie", (string)null);
                 });
 
             modelBuilder.Entity("MovieUser", b =>
@@ -46,7 +46,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Migrations
 
                     b.HasIndex("UserFavoritesUserId");
 
-                    b.ToTable("MovieUser");
+                    b.ToTable("MovieUser", (string)null);
                 });
 
             modelBuilder.Entity("webNET_Hits_backend_aspnet_project_1.Models.Genre", b =>
@@ -63,7 +63,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Migrations
 
                     b.HasKey("GenreId");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("webNET_Hits_backend_aspnet_project_1.Models.Movie", b =>
@@ -108,7 +108,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Migrations
 
                     b.HasKey("MovieId");
 
-                    b.ToTable("Movies");
+                    b.ToTable("Movies", (string)null);
                 });
 
             modelBuilder.Entity("webNET_Hits_backend_aspnet_project_1.Models.Review", b =>
@@ -141,7 +141,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Reviews");
+                    b.ToTable("Reviews", (string)null);
                 });
 
             modelBuilder.Entity("webNET_Hits_backend_aspnet_project_1.Models.User", b =>
@@ -182,7 +182,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("GenreMovie", b =>
