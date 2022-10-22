@@ -25,7 +25,7 @@ namespace webNET_Hits_backend_aspnet_project_1 {
 
         // Задаем подключение к базе данных
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseMySql("server=markridge.space;user=db_user_film;password=BukvwsMbZp32m2;database=film_catalog;",
+            optionsBuilder.UseMySql("server=79.137.196.178;user=db_user_film;password=BukvwsMbZp32m2;database=film_catalog;",
                 new MySqlServerVersion(new Version(8, 0, 30)));
         }
     }
