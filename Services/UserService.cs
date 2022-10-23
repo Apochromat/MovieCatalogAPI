@@ -11,7 +11,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             foreach (User n_user in db.Users) {
                 if (n_user.Username == Username) user = n_user;
             }
-            if (user == null) throw new ArgumentNullException();
+            if (user == null) throw new ArgumentNullException("User not found");
 
             return new ProfileModel {
                 id = user.UserId,
@@ -32,7 +32,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             if (user == null) throw new ArgumentNullException("User not found");
 
             user.UserId = profileModel.id;
-            user.Username = profileModel.nickName;
+            user.Username = profileModel.nickName.ToLower();
             user.EmailAddress = profileModel.email;
             user.AvatarLink = profileModel.avatarLink;
             user.Name = profileModel.name;

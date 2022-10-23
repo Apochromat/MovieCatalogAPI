@@ -30,14 +30,20 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         [Authorize]
         [HttpGet]
         [Route("profile")]
-        public async Task<IActionResult> GetAsync() {
+        public async Task<ActionResult<ProfileModel>> GetAsync() {
             try {
+                // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
-                String username = User.Identity.Name;
-                ProfileModel profileModel = _userService.getprofile(username, db);
+
+                ProfileModel profileModel = _userService.getprofile(User.Identity.Name, db);
+
                 return Ok(profileModel);
+
             } catch (ArgumentNullException e) {
-                return Problem(statusCode: 404, title: e.Message);
+                // Catch if "username" was not found in database
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");
@@ -48,16 +54,22 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         [HttpPut]
         [Route("profile")]
         public async Task<IActionResult> PutAsync([FromBody] ProfileModel profileModel) {
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid) { // Model checking
                 return BadRequest(ModelState);
             }
             try {
+                // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
-                String username = User.Identity.Name;
-                await _userService.modifyprofile(username, profileModel, db);
-                return Ok();
+
+                await _userService.modifyprofile(User.Identity.Name, profileModel, db);
+
+                return Ok("Success");
+
             } catch (ArgumentNullException e) {
+                // Catch if "username" was not found in database
+                _logger.LogError(e, e.Message);
                 return NotFound(e.Message);
+
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");
