@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using webNET_Hits_backend_aspnet_project_1;
@@ -10,9 +12,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddSingleton<IDistributedCache, RedisCache>();
+builder.Services.AddScoped<ICacheService, CacheService>();
 
 // Add DbContext
 builder.Services.AddDbContext<ApplicationDbContext>();
+builder.Services.AddStackExchangeRedisCache(options => {
+    options.Configuration = builder.Configuration.GetConnectionString("MyRedisConStr");
+    options.InstanceName = "JwtTokenCache";
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -71,6 +79,15 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+//app.Lifetime.ApplicationStarted.Register(() => {
+//    var currentTimeUTC = DateTime.UtcNow.ToString();
+//    byte[] encodedCurrentTimeUTC = System.Text.Encoding.UTF8.GetBytes(currentTimeUTC);
+//    var options = new DistributedCacheEntryOptions()
+//        .SetSlidingExpiration(TimeSpan.FromSeconds(20));
+//    app.Services.GetService<IDistributedCache>()
+//                              .Set("cachedTimeUTC", encodedCurrentTimeUTC, options);
+//});
 
 app.UseHttpsRedirection();
 

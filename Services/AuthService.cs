@@ -10,7 +10,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
     public class AuthService : IAuthService {
         public async Task<JsonResult> register(UserRegisterModel userRegisterModel, ApplicationDbContext db) {
             foreach (User n_user in db.Users) {
-                if (n_user.Username == userRegisterModel.userName.ToLower()) 
+                if (n_user.Username == userRegisterModel.userName.ToLower())
                     throw new ArgumentException("User already exists");
             }
             User user = new User {
@@ -23,7 +23,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             };
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
-            return await login(new LoginCredentials {username = userRegisterModel.userName.ToLower(), password = userRegisterModel.password }, db);
+            return await login(new LoginCredentials { username = userRegisterModel.userName.ToLower(), password = userRegisterModel.password }, db);
         }
         public async Task<JsonResult> login(LoginCredentials loginCredentials, ApplicationDbContext db) {
             var identity = await GetIdentity(loginCredentials.username, loginCredentials.password, db);
@@ -65,13 +65,14 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
 
             // Claims описывают набор базовых данных для авторизованного пользователя
             var claims = new List<Claim>{
-            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username)
-            };
+            new Claim(ClaimsIdentity.DefaultNameClaimType, user.Username),
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role)
+        };
 
-            //Claims identity и будет являться полезной нагрузкой в JWT токене, которая будет проверяться стандартным атрибутом Authorize
-            var claimsIdentity =
-                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
+        //Claims identity и будет являться полезной нагрузкой в JWT токене, которая будет проверяться стандартным атрибутом Authorize
+        var claimsIdentity =
+            new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
         }
-    }
+}
 }
