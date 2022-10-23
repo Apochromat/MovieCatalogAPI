@@ -25,7 +25,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Models
 
         public String? AvatarLink { get; set; }
 
-        public String Role { get; set; }
+        public String Role { get; set; } = "user";
 
         public Gender Gender { get; set; }
 

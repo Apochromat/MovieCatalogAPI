@@ -12,12 +12,14 @@ namespace webNET_Hits_backend_aspnet_project_1.Models.DTO {
         [Required]
         public String password { get; set; }
 
-        [EmailAddress(ErrorMessage = "Некорректный email-адрес")]
+        [EmailAddress]
         [Required]
         public String email { get; set; }
 
+        [Required]
         public DateTime birthDate { get; set; }
 
+        [Required]
         public Gender gender { get; set; } 
     }
 }
