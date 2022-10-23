@@ -14,11 +14,5 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         public UserController(ApplicationDbContext context) {
             db = context;
         }
-
-        [HttpGet]
-        [Route("profile")]
-        public IActionResult Get([FromBody] UserRegisterModel review) {
-            return Ok();
-        } 
     }
 }

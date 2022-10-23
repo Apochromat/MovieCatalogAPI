@@ -20,12 +20,15 @@ namespace webNET_Hits_backend_aspnet_project_1 {
             modelBuilder.Entity<Movie>().HasKey(x => x.MovieId);
             modelBuilder.Entity<Genre>().HasKey(x => x.GenreId);
             modelBuilder.Entity<Review>().HasKey(x => x.ReviewId);
-
         }
 
         // Задаем подключение к базе данных
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
-            optionsBuilder.UseMySql("server=79.137.196.178;user=db_user_film;password=BukvwsMbZp32m2;database=film_catalog;",
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+            optionsBuilder.UseMySql(configuration.GetConnectionString("DefaultConnection"),
                 new MySqlServerVersion(new Version(8, 0, 30)));
         }
     }
