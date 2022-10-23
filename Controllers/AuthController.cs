@@ -10,7 +10,7 @@ using webNET_Hits_backend_aspnet_project_1.Services;
 namespace webNET_Hits_backend_aspnet_project_1.Controllers
 {
     [ApiController]
-    [Route("api/profile")]
+    [Route("api/account")]
     public class AuthController : ControllerBase {
         private readonly ApplicationDbContext db;
         private readonly ILogger<AuthController> _logger;
