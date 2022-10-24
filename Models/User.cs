@@ -29,6 +29,6 @@ namespace webNET_Hits_backend_aspnet_project_1.Models
 
         public Gender Gender { get; set; }
 
-        public ICollection<Movie> UserFavorites { get; set; } = new List<Movie>();
+        public List<Movie> UserFavorites { get; set; } = new List<Movie>();
     }
 }

@@ -1,24 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using webNET_Hits_backend_aspnet_project_1.Models;
 using webNET_Hits_backend_aspnet_project_1.Models.DTO;
+using webNET_Hits_backend_aspnet_project_1.Models.Enum;
 
 namespace webNET_Hits_backend_aspnet_project_1.Services {
     public class MovieService : IMovieService {
         public async Task<IActionResult> createmovie(MovieDetailsModel movieDetailsModel, ApplicationDbContext db) {
-            Movie movie = new Movie {
-                Name = movieDetailsModel.name,
-                PosterLink = movieDetailsModel.poster,
-                Year = movieDetailsModel.year,
-                Country = movieDetailsModel.country,
-                Time = movieDetailsModel.time,
-                Tagline = movieDetailsModel.tagline,
-                Director = movieDetailsModel.director,
-                Description = movieDetailsModel.description,
-                Budget = movieDetailsModel.budget,
-                Fees = movieDetailsModel.fees,
-                AgeLimit = movieDetailsModel.ageLimit
-            };
+            Movie movie = new Movie(movieDetailsModel);
 
             await db.Movies.AddAsync(movie);
             await db.SaveChangesAsync();
@@ -52,20 +42,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
                 throw new ArgumentNullException("Movie not found");
             }
 
-            MovieDetailsModel movieDetailsModel = new MovieDetailsModel {
-                id = movie.MovieId,
-                name = movie.Name,
-                poster = movie.PosterLink,
-                year = movie.Year,
-                country = movie.Country,
-                time = movie.Time,
-                tagline = movie.Tagline,
-                director = movie.Director,
-                description = movie.Description,
-                budget = movie.Budget,
-                fees = movie.Fees,
-                ageLimit = movie.AgeLimit
-            };
+            MovieDetailsModel movieDetailsModel = new MovieDetailsModel(movie);
 
             return movieDetailsModel;
         }
@@ -74,16 +51,65 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             throw new NotImplementedException();
         }
 
-        Task<IActionResult> IMovieService.creategenre(GenreModel genreModel, ApplicationDbContext db) {
-            throw new NotImplementedException();
+        public async Task<IActionResult> addmoviegenre(Guid MovieId, Guid GenreId, ApplicationDbContext db) {
+            Movie? movie = null;
+            foreach (Movie n_movie in db.Movies) {
+                if (n_movie.MovieId == MovieId) {
+                    movie = n_movie;
+                }
+            }
+            if (movie == null) {
+                throw new ArgumentNullException("Movie not found");
+            }
+
+            Genre? genre = null;
+            foreach (Genre n_genre in db.Genres) {
+                if (n_genre.GenreId == GenreId) {
+                    genre = n_genre;
+                }
+            }
+            if (genre == null) {
+                throw new ArgumentNullException("Genre not found");
+            }
+
+            movie.MovieGenres.Add(genre);
+            //genre.MovieGenres.Add(movie);
+
+            await db.SaveChangesAsync();
+
+            return new OkObjectResult(movie.MovieGenres);
         }
 
-        Task<IActionResult> IMovieService.deletegenre(Guid GenreId, ApplicationDbContext db) {
-            throw new NotImplementedException();
-        }
+        public async Task<IActionResult> deletemoviegenre(Guid MovieId, Guid GenreId, ApplicationDbContext db) {
+            Movie? movie = null;
+            foreach (Movie n_movie in db.Movies) {
+                if (n_movie.MovieId == MovieId) {
+                    movie = n_movie;
+                }
+            }
+            if (movie == null) {
+                throw new ArgumentNullException("Movie not found");
+            }
 
-        Task<List<GenreModel>> IMovieService.getgenres() {
-            throw new NotImplementedException();
+            Genre? genre = null;
+            foreach (Genre n_genre in db.Genres) {
+                if (n_genre.GenreId == GenreId) {
+                    genre = n_genre;
+                }
+            }
+            if (genre == null) {
+                throw new ArgumentNullException("Genre not found");
+            }
+
+            var var1 = movie.MovieGenres.ToList();
+            //var var2 = genre.MovieGenres.ToList();
+
+            //movie.MovieGenres.Remove(genre);
+            //genre.MovieGenres.Remove(movie);
+
+            await db.SaveChangesAsync();
+
+            return new OkObjectResult(movie.MovieGenres);
         }
     }
 }

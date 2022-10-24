@@ -13,9 +13,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
 
         Task<MovieDetailsModel> getmoviedetails(Guid MovieId, ApplicationDbContext db);
 
-        Task<List<GenreModel>> getgenres();
-        Task<IActionResult> creategenre(GenreModel genreModel, ApplicationDbContext db);
-        Task<IActionResult> deletegenre(Guid GenreId, ApplicationDbContext db);
+        Task<IActionResult> addmoviegenre(Guid MovieId, Guid GenreId, ApplicationDbContext db);
 
+        Task<IActionResult> deletemoviegenre(Guid MovieId, Guid GenreId, ApplicationDbContext db);
     }
 }

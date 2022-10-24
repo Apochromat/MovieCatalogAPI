@@ -57,8 +57,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             }
         }
 
-
-        [HttpPost]
+        [HttpDelete]
         [Authorize(Roles = "admin")]
         [Route("delete/{id}")]
         public async Task<ActionResult> RemoveMovie(Guid id) {
@@ -80,5 +79,48 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             }
         }
 
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        [Route("{movieid}/genres/{genreid}/add")]
+        public async Task<ActionResult> AddMovieGenre(Guid movieid, Guid genreid) {
+            try {
+                // Logout checking
+                if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
+
+                var res = await _movieService.addmoviegenre(movieid, genreid, db);
+                return Ok(res);
+
+            } catch (ArgumentNullException e) {
+                // Catch if movie or genre was not found in database
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+
+            } catch (Exception e) {
+                _logger.LogError(e, e.Message);
+                return Problem(statusCode: 500, title: "Something went wrong");
+            }
+        }
+
+        [HttpDelete]
+        [Authorize(Roles = "admin")]
+        [Route("{movieid}/genres/{genreid}/delete")]
+        public async Task<ActionResult> RemoveMovieGenre(Guid movieid, Guid genreid) {
+            try {
+                // Logout checking
+                if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
+
+                var res = await _movieService.deletemoviegenre(movieid, genreid, db);
+                return Ok(res);
+
+            } catch (ArgumentNullException e) {
+                // Catch if movie or genre was not found in database
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+
+            } catch (Exception e) {
+                _logger.LogError(e, e.Message);
+                return Problem(statusCode: 500, title: "Something went wrong");
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using webNET_Hits_backend_aspnet_project_1.Models.DTO;
 
 namespace webNET_Hits_backend_aspnet_project_1.Models {
     public class Genre {
@@ -8,6 +9,14 @@ namespace webNET_Hits_backend_aspnet_project_1.Models {
         public String? Name { get; set; }
 
         public String? Description { get; set; }
-        public ICollection<Movie> MovieGenres { get; set; } = new List<Movie>();
+
+        public List<Movie> MovieGenres { get; set; } = new List<Movie>();
+
+        public Genre(GenreModel genreModel) {
+            GenreId = Guid.NewGuid();
+            Name = genreModel.name;
+        }
+
+        public Genre() { }
     }
 }
