@@ -20,16 +20,11 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
                 if (n_user.Username == userRegisterModel.userName.ToLower())
                     throw new ArgumentException("User already exists");
             }
-            User user = new User {
-                Name = userRegisterModel.name,
-                Username = userRegisterModel.userName.ToLower(),
-                Password = userRegisterModel.password,
-                EmailAddress = userRegisterModel.email,
-                BirthDate = userRegisterModel.birthDate,
-                Gender = userRegisterModel.gender
-            };
+
+            User user = new User(userRegisterModel);
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
+
             return await login(new LoginCredentials { username = userRegisterModel.userName, password = userRegisterModel.password }, db);
         }
 

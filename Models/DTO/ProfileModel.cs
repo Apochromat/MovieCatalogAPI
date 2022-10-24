@@ -31,5 +31,15 @@ namespace webNET_Hits_backend_aspnet_project_1.Models.DTO {
 
         [Required]
         public Gender gender { get; set; }
+
+        public ProfileModel (User user) {
+            this.id = user.UserId;
+            this.nickName = user.Username;
+            this.email = user.EmailAddress;
+            this.avatarLink = user.AvatarLink;
+            this.name = user.Name;
+            this.birthDate = user.BirthDate;
+            this.gender = user.Gender;
+        }
     }
 }

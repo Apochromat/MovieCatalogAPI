@@ -13,15 +13,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             }
             if (user == null) throw new ArgumentNullException("User not found");
 
-            return new ProfileModel {
-                id = user.UserId,
-                nickName = user.Username,
-                email = user.EmailAddress,
-                avatarLink = user.AvatarLink,
-                name = user.Name,
-                birthDate = user.BirthDate,
-                gender = user.Gender
-            };
+            return new ProfileModel(user);
         }
 
         public async Task<int> modifyprofile(String Username, ProfileModel profileModel, ApplicationDbContext db) {
