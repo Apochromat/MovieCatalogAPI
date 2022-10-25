@@ -24,15 +24,32 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
 
         [HttpGet]
         [Route("details/{id}")]
-        public async Task<ActionResult<MovieDetailsModel>> GetMovieDetails(Guid id) {
+        public ActionResult<MovieDetailsModel> GetMovieDetails(Guid id) {
             try {
-                var movieDetails = await _movieService.getmoviedetails(id, db);
+                var movieDetails = _movieService.getmoviedetails(id, db);
                 return Ok(movieDetails);
 
             } catch (ArgumentNullException e) {
                 // Catch if movie was not found in database
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);
+
+            } catch (Exception e) {
+                _logger.LogError(e, e.Message);
+                return Problem(statusCode: 500, title: "Something went wrong");
+            }
+        }
+
+        [HttpGet]
+        [Route("page/{page}")]
+        public ActionResult<MoviesPagedListModel> GetMoviesPage(int page = 1) {
+            try {
+                var moviesPagedListModel = _movieService.getmoviespage(page, db);
+                return Ok(moviesPagedListModel);
+
+            } catch (ArgumentException e) {
+                _logger.LogError(e, e.Message);
+                return Problem(e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);

@@ -13,7 +13,6 @@ namespace webNET_Hits_backend_aspnet_project_1.Models {
         public List<Movie> MovieGenres { get; set; } = new List<Movie>();
 
         public Genre(GenreModel genreModel) {
-            GenreId = Guid.NewGuid();
             Name = genreModel.name;
         }
 

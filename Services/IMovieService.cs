@@ -9,9 +9,9 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
 
         Task<IActionResult> deletemovie(Guid MovieId, ApplicationDbContext db);
 
-        Task<MoviesPagedListModel> getmoviespage(int Page, ApplicationDbContext db);
+        MoviesPagedListModel getmoviespage(int Page, ApplicationDbContext db);
 
-        Task<MovieDetailsModel> getmoviedetails(Guid MovieId, ApplicationDbContext db);
+        MovieDetailsModel getmoviedetails(Guid MovieId, ApplicationDbContext db);
 
         Task<IActionResult> addmoviegenre(Guid MovieId, Guid GenreId, ApplicationDbContext db);
 

@@ -24,7 +24,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
 
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult<List<GenreModel>>> GetGenres() {
+        public ActionResult<List<GenreModel>> GetGenres() {
             try {
                 var genreModels = _genreService.getgenres(db);
                 return Ok(genreModels);

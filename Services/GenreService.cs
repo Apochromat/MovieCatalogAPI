@@ -33,10 +33,9 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
         }
 
         public List<GenreModel> getgenres(ApplicationDbContext db) {
-            var genres = db.Genres.AsEnumerable();
-            List<GenreModel> genreModels = genres.Select(x => new GenreModel(x)).ToList();
+            var genres = db.Genres.Select(x => new GenreModel(x)).ToList();
 
-            return genreModels;
+            return genres;
         }
 
     }

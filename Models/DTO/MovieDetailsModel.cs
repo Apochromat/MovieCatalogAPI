@@ -15,6 +15,22 @@
         public int? fees { get; set; }
         public int? ageLimit { get; set; }
 
+        public MovieDetailsModel(Movie movie, IEnumerable<Genre> genresList) {
+            id = movie.MovieId;
+            name = movie.Name;
+            poster = movie.PosterLink;
+            year = movie.Year;
+            country = movie.Country;
+            time = movie.Time;
+            tagline = movie.Tagline;
+            director = movie.Director;
+            description = movie.Description;
+            budget = movie.Budget;
+            fees = movie.Fees;
+            ageLimit = movie.AgeLimit;
+            genres = genresList.Select(x => new GenreModel(x)).ToList();
+        }
+
         public MovieDetailsModel(Movie movie) {
             id = movie.MovieId;
             name = movie.Name;

@@ -33,7 +33,6 @@ namespace webNET_Hits_backend_aspnet_project_1.Models {
         public List<Genre> MovieGenres { get; set; } = new List<Genre>();
 
         public Movie(MovieDetailsModel movieDetailsModel) {
-            MovieId = Guid.NewGuid();
             Name = movieDetailsModel.name;
             PosterLink = movieDetailsModel.poster;
             Year = movieDetailsModel.year;

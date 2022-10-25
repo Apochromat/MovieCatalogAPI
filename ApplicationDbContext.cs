@@ -28,8 +28,8 @@ namespace webNET_Hits_backend_aspnet_project_1 {
                 .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
                 .AddJsonFile("appsettings.json")
                 .Build();
-            optionsBuilder.UseMySql(configuration.GetConnectionString("DefaultConnection"),
-                new MySqlServerVersion(new Version(8, 0, 30)));
+            optionsBuilder.UseMySql(configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 30)));
+            //optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=film_catalog;Username=postgres;Password=postgres");
         }
     }
 }
