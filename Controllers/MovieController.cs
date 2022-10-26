@@ -41,7 +41,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         }
 
         [HttpGet]
-        [Route("page/{page}")]
+        [Route("{page}")]
         public ActionResult<MoviesPagedListModel> GetMoviesPage(int page = 1) {
             try {
                 var moviesPagedListModel = _movieService.getmoviespage(page, db);

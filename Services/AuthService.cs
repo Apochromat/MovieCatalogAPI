@@ -50,7 +50,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             var response = new {
-                access_token = encodedJwt,
+                token = encodedJwt,
                 username = identity.Name,
                 role = db.Users.Where(x => x.Username == loginCredentials.username.ToLower()).FirstOrDefault().Role
             };
