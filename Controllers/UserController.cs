@@ -39,7 +39,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
 
                 return Ok(profileModel);
 
-            } catch (ArgumentNullException e) {
+            } catch (KeyNotFoundException e) {
                 // Catch if "username" was not found in database
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);
@@ -65,7 +65,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
 
                 return Ok("Success");
 
-            } catch (ArgumentNullException e) {
+            } catch (KeyNotFoundException e) {
                 // Catch if "username" was not found in database
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);

@@ -42,6 +42,14 @@ namespace webNET_Hits_backend_aspnet_project_1.Models
             Gender = userRegisterModel.gender;
         }
 
+        public void Modify(ProfileModel profileModel) {
+            this.EmailAddress = profileModel.email;
+            this.AvatarLink = profileModel.avatarLink;
+            this.Name = profileModel.name;
+            this.BirthDate = profileModel.birthDate;
+            this.Gender = profileModel.gender;
+        }
+
         public User() { }
     }
 }
