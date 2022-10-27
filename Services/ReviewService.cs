@@ -9,17 +9,21 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             User? user = db.Users.Where(x => x.Username == Username).FirstOrDefault();
             if (user == null) { throw new KeyNotFoundException("User not found"); }
 
-            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.UserFavorites).FirstOrDefault();
+            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.Reviews).FirstOrDefault();
             if (movie == null) { throw new KeyNotFoundException("Movie not found"); }
+
+            Review? again = movie.Reviews.Where(x => x.User.Username == Username).FirstOrDefault();
+            if (again != null) { throw new ArgumentException("Review already exists"); }
 
             Review review = new Review(reviewModifyModel, user);
 
-            db.Attach(movie);
             movie.Reviews.Add(review);
-
-            await db.Reviews.AddAsync(review);
+            db.Entry(review).State = EntityState.Added;
+            db.Entry(movie).State = EntityState.Modified;
+            
             await db.SaveChangesAsync();
-            return new OkResult();
+
+            return new OkObjectResult(db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.Reviews).FirstOrDefault());
         }
 
         public async Task<IActionResult> deletereview(Guid ReviewId, ApplicationDbContext db) {
@@ -43,14 +47,14 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
         }
 
         public List<ReviewModel> getreviewmodels(Guid MovieId, ApplicationDbContext db) {
-            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.UserFavorites).FirstOrDefault();
+            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.Reviews).FirstOrDefault();
             if (movie == null) { throw new KeyNotFoundException("Movie not found"); }
 
             return movie.Reviews.Select(x => new ReviewModel(x)).ToList();
         }
 
         public List<ReviewShortModel> getreviewshortmodels(Guid MovieId, ApplicationDbContext db) {
-            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.UserFavorites).FirstOrDefault();
+            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.Reviews).FirstOrDefault();
             if (movie == null) { throw new KeyNotFoundException("Movie not found"); }
 
             return movie.Reviews.Select(x => new ReviewShortModel(x)).ToList();

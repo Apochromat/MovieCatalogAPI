@@ -37,7 +37,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Catch if user with this usename already exists
                 _logger.LogError(e, e.Message);
-                return Problem(statusCode: 401, title: e.Message);
+                return Conflict(e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -60,7 +60,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Catch incorrect username or password
                 _logger.LogError(e, e.Message);
-                return Problem(statusCode: 409, title: e.Message);
+                return Problem(statusCode: 401, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);

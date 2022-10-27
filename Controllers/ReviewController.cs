@@ -31,9 +31,15 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
-                await _reviewService.addreview(User.Identity.Name, movieId, reviewModifyModel, db);
-                return Ok();
+                var t = await _reviewService.addreview(User.Identity.Name, movieId, reviewModifyModel, db);
+                return Ok(t);
 
+            } catch (ArgumentException e) {
+                _logger.LogError(e, e.Message);
+                return Conflict(e.Message);
+            } catch (KeyNotFoundException e) {
+                _logger.LogError(e, e.Message);
+                return Problem(e.Message);
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");

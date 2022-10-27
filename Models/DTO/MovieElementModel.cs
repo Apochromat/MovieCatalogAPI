@@ -27,6 +27,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Models.DTO {
             year = movie.Year;
             country = movie.Country;
             genres = movie.MovieGenres.Select(x => new GenreModel(x)).ToList();
+            reviews = movie.Reviews.Select(x => new ReviewShortModel(x)).ToList();
         }
     }
 }

@@ -7,7 +7,11 @@ using webNET_Hits_backend_aspnet_project_1.Models.Enum;
 
 namespace webNET_Hits_backend_aspnet_project_1.Services {
     public class MovieService : IMovieService {
-        public async Task<IActionResult> createmovie(MovieDetailsModel movieDetailsModel, ApplicationDbContext db) {
+        private readonly IReviewService _reviewService;
+        public MovieService(IReviewService reviewService) {
+            _reviewService = reviewService;
+        }
+        public async Task<IActionResult> createmovie(MovieDetailsModel movieDetailsModel, ApplicationDbContext db ) {
             Movie movie = new Movie(movieDetailsModel);
 
             await db.Movies.AddAsync(movie);
@@ -27,12 +31,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
         }
 
         public MovieDetailsModel getmoviedetails(Guid MovieId, ApplicationDbContext db) {
-            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.MovieGenres).FirstOrDefault();
+            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.MovieGenres).Include(x => x.Reviews).ThenInclude(x => x.User).FirstOrDefault();
             if (movie == null) {
                 throw new ArgumentNullException("Movie not found");
             }
 
-            MovieDetailsModel movieDetailsModel = new MovieDetailsModel(movie);
+            MovieDetailsModel movieDetailsModel = new MovieDetailsModel(movie, _reviewService.getreviewmodels(MovieId, db));
 
             return movieDetailsModel;
         }
@@ -41,7 +45,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             const int pageSize = 2;
             if (Page <= 0) { throw new ArgumentException("Page must be higher then zero"); }
 
-            List<Movie> movies = db.Movies.Include(x => x.MovieGenres).ToList();
+            List<Movie> movies = db.Movies.Include(x => x.MovieGenres).Include(x => x.Reviews).ToList();
             List<List<Movie>> splittedMovies = Misc.Split<Movie>(movies, pageSize);
             List<MovieElementModel> moviesList = new List<MovieElementModel>();
 

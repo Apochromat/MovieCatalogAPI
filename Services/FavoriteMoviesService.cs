@@ -32,7 +32,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
         }
 
         public MoviesListModel getfavorites(string Username, ApplicationDbContext db) {
-            User? user = db.Users.Where(x => x.Username == Username).Include(x => x.UserFavorites).FirstOrDefault();
+            User? user = db.Users.Where(x => x.Username == Username).Include("UserFavorites").Include("UserFavorites.Reviews").Include("UserFavorites.MovieGenres").FirstOrDefault();
             if (user == null) { throw new KeyNotFoundException("User not found"); }
 
             return new MoviesListModel(user.UserFavorites.Select(x => new MovieElementModel(x)).ToList());
