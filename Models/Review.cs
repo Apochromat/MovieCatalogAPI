@@ -18,6 +18,6 @@ namespace webNET_Hits_backend_aspnet_project_1.Models {
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-
+        public Review() { }
     }
 }

@@ -41,5 +41,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Models
             BirthDate = userRegisterModel.birthDate;
             Gender = userRegisterModel.gender;
         }
+
+        public User() { }
     }
 }

@@ -24,12 +24,11 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             User user = new User(userRegisterModel);
             await db.Users.AddAsync(user);
             await db.SaveChangesAsync();
-
-            return await login(new LoginCredentials { username = userRegisterModel.userName, password = userRegisterModel.password }, db);
+            return login(new LoginCredentials { username = userRegisterModel.userName, password = userRegisterModel.password }, db);
         }
 
-        public async Task<JsonResult> login(LoginCredentials loginCredentials, ApplicationDbContext db) {
-            var identity = await GetIdentity(loginCredentials.username.ToLower(), loginCredentials.password, db);
+        public JsonResult login(LoginCredentials loginCredentials, ApplicationDbContext db) {
+            var identity = GetIdentity(loginCredentials.username.ToLower(), loginCredentials.password, db);
             if (identity == null) {
                 throw new ArgumentException("Incorrect username or password");
             }
@@ -45,8 +44,9 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             var response = new {
-                access_token = encodedJwt,
-                username = identity.Name
+                token = encodedJwt,
+                username = identity.Name,
+                role = db.Users.Where(x => x.Username == loginCredentials.username.ToLower()).FirstOrDefault().Role
             };
 
             return new JsonResult(response);
@@ -57,7 +57,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             return new OkResult();
         }
 
-        private async Task<ClaimsIdentity?> GetIdentity(string username, string password, ApplicationDbContext db) {
+        private ClaimsIdentity? GetIdentity(string username, string password, ApplicationDbContext db) {
             var user = db.Users.FirstOrDefault(x => x.Username == username && x.Password == password);
             if (user == null) {
                 return null;

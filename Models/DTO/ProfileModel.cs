@@ -41,5 +41,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Models.DTO {
             this.birthDate = user.BirthDate;
             this.gender = user.Gender;
         }
+
+        public ProfileModel() { }
     }
 }
