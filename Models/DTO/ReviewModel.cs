@@ -6,5 +6,16 @@
         public Boolean isAnonymous { get; set; }
         public DateTime createDateTime { get; set; }
         public UserShortModel author { get; set; }
+
+        public ReviewModel (Review review) {
+            id = review.ReviewId;
+            rating = review.Rating;
+            reviewText = review.ReviewText;
+            isAnonymous = review.IsAnonymous;
+            createDateTime = review.CreatedAt;
+            author = new UserShortModel(review.User);
+        }
+
+        public ReviewModel() { }
     }
 }

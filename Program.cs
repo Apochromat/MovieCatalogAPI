@@ -27,6 +27,7 @@ builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddSingleton<IDistributedCache, RedisCache>();
 builder.Services.AddScoped<ICacheService, CacheService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<IFavoriteMoviesService, FavoriteMoviesService>();
 
 // Add DbContext

@@ -3,5 +3,13 @@
         public Guid userId { get; set; }
         public String? nickName { get; set; }
         public String? avatar { get; set; }
+
+        public UserShortModel (User user) {
+            userId = user.UserId;
+            nickName = user.Username;
+            avatar = user.AvatarLink;
+        }
+
+        public UserShortModel() { }
     }
 }
