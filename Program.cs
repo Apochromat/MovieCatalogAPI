@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text.Json.Serialization;
 using webNET_Hits_backend_aspnet_project_1;
 using webNET_Hits_backend_aspnet_project_1.Services;
@@ -80,6 +81,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
         };
     });
+
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
 
