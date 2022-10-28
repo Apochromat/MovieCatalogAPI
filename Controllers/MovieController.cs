@@ -60,7 +60,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         [HttpPost]
         [Authorize(Roles = "admin")]
         [Route("add")]
-        public async Task<ActionResult> AddMovie([FromBody] MovieDetailsModel movieDetailsModel) {
+        public async Task<ActionResult> AddMovie([FromBody]MovieDetailsModel movieDetailsModel) {
             try {
                 // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");

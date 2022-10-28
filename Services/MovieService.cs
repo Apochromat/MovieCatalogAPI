@@ -42,7 +42,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
         }
 
         public MoviesPagedListModel getmoviespage(int Page, ApplicationDbContext db) {
-            const int pageSize = 2;
+            const int pageSize = 8;
             if (Page <= 0) { throw new ArgumentException("Page must be higher then zero"); }
 
             List<Movie> movies = db.Movies.Include(x => x.MovieGenres).Include(x => x.Reviews).ToList();
