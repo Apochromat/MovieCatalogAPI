@@ -13,8 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options => {
     options.AddDefaultPolicy(
         policy => {
-            policy.WithOrigins("http://127.0.0.1:5500").AllowCredentials().AllowAnyHeader().AllowAnyMethod();
-            //.WithOrigins().AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
+            //policy.WithOrigins("https://kinozal.markridge.space").AllowCredentials().AllowAnyHeader().AllowAnyMethod();
+            policy.WithOrigins().AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials();
         });
 });
 

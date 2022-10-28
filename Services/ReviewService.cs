@@ -9,7 +9,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             User? user = db.Users.Where(x => x.Username == Username).FirstOrDefault();
             if (user == null) { throw new KeyNotFoundException("User not found"); }
 
-            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.Reviews).FirstOrDefault();
+            Movie? movie = db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.Reviews).ThenInclude(x => x.User).FirstOrDefault();
             if (movie == null) { throw new KeyNotFoundException("Movie not found"); }
 
             Review? again = movie.Reviews.Where(x => x.User.Username == Username).FirstOrDefault();
