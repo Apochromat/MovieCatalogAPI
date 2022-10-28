@@ -97,15 +97,6 @@ if (app.Environment.IsDevelopment() || true) {
     app.UseSwaggerUI();
 }
 
-//app.Lifetime.ApplicationStarted.Register(() => {
-//    var currentTimeUTC = DateTime.UtcNow.ToString();
-//    byte[] encodedCurrentTimeUTC = System.Text.Encoding.UTF8.GetBytes(currentTimeUTC);
-//    var options = new DistributedCacheEntryOptions()
-//        .SetSlidingExpiration(TimeSpan.FromSeconds(20));
-//    app.Services.GetService<IDistributedCache>()
-//                              .Set("cachedTimeUTC", encodedCurrentTimeUTC, options);
-//});
-
 app.UseHttpsRedirection();
 
 app.UseCors();
