@@ -66,7 +66,6 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 _logger.LogInformation($"Succesful editing {User.Identity.Name}'s profile information");
 
                 return Ok("Success");
-                return Ok("Success");
 
             } catch (KeyNotFoundException e) {
                 // Catch if "username" was not found in database

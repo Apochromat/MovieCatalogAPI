@@ -28,7 +28,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
 
         public async Task<IActionResult> deletereview(Guid ReviewId, ApplicationDbContext db) {
             Review? review = db.Reviews.Where(x => x.ReviewId == ReviewId).FirstOrDefault();
-            if (review == null) { throw new KeyNotFoundException(); }
+            if (review == null) { throw new KeyNotFoundException("Review not found"); }
 
             db.Reviews.Remove(review);
             await db.SaveChangesAsync();
@@ -37,7 +37,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
 
         public async Task<IActionResult> editreview(Guid ReviewId, ReviewModifyModel reviewModifyModel, ApplicationDbContext db) {
             Review? review = db.Reviews.Where(x => x.ReviewId == ReviewId).FirstOrDefault();
-            if (review == null) { throw new KeyNotFoundException(); }
+            if (review == null) { throw new KeyNotFoundException("Review not found"); }
 
             db.Attach(review);
             review.Modify(reviewModifyModel);

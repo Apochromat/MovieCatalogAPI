@@ -35,6 +35,11 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
 
                 return moviesListModel;
 
+            } catch (KeyNotFoundException e) {
+                // Log if movie or user does not exist
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");
@@ -54,7 +59,16 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
 
                 return Ok();
 
-                // TODO: Отлов, если фильм есть
+            } catch (ArgumentException e) {
+                // Log if movie already in favorites
+                _logger.LogError(e, e.Message);
+                return Conflict(e.Message);
+
+            } catch (KeyNotFoundException e) {
+                // Log if movie or user does not exist
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");
@@ -73,7 +87,17 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 _logger.LogInformation($"Succesful deleting from {User.Identity.Name}'s favorites: {movieId}");
 
                 return Ok();
-                // TODO: Отлов, если фильма нет
+
+            } catch (ArgumentException e) {
+                // Log if movie is not in favorites
+                _logger.LogError(e, e.Message);
+                return Conflict(e.Message);
+
+            } catch (KeyNotFoundException e) {
+                // Log if movie or user does not exist
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");

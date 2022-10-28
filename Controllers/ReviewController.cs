@@ -36,14 +36,15 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
 
                 return Ok();
 
-                // TODO: Explain
             } catch (ArgumentException e) {
+                // Catch if user or movie already exists
                 _logger.LogError(e, e.Message);
                 return Conflict(e.Message);
 
             } catch (KeyNotFoundException e) {
+                // Catch if review does not exist
                 _logger.LogError(e, e.Message);
-                return Problem(e.Message);
+                return NotFound(e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -64,6 +65,11 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
 
                 return Ok();
 
+            } catch (KeyNotFoundException e) {
+                // Catch if review does not exist
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");
@@ -82,7 +88,11 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 _logger.LogInformation($"Succesful deleting review {reviewId} from {User.Identity.Name} for movie {movieId}");
                 return Ok();
 
-                // TODO: catch if review does not exist
+            } catch (KeyNotFoundException e) {
+                // Catch if review does not exist
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
+
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");

@@ -80,6 +80,5 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 return Problem(statusCode: 500, title: "Something went wrong");
             }
         }
-
     }
 }
