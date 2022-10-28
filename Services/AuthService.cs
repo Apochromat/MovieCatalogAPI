@@ -10,9 +10,11 @@ using webNET_Hits_backend_aspnet_project_1.Models.DTO;
 namespace webNET_Hits_backend_aspnet_project_1.Services {
     public class AuthService : IAuthService {
         private readonly ICacheService _cacheService;
+        private readonly IConfiguration _config;
 
-        public AuthService(ICacheService cacheService) {
+        public AuthService(ICacheService cacheService, IConfiguration config) {
             _cacheService = cacheService;
+            _config = config;
         }
 
         public async Task<JsonResult> register(UserRegisterModel userRegisterModel, ApplicationDbContext db) {
@@ -28,6 +30,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
         }
 
         public JsonResult login(LoginCredentials loginCredentials, ApplicationDbContext db) {
+            var config = new JwtConfigurations(_config);
             var identity = GetIdentity(loginCredentials.username.ToLower(), loginCredentials.password, db);
             if (identity == null) {
                 throw new ArgumentException("Incorrect username or password");
@@ -39,7 +42,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
                 audience: JwtConfigurations.Audience,
                 notBefore: now,
                 claims: identity.Claims,
-                expires: now.Add(TimeSpan.FromHours(JwtConfigurations.Lifetime)),
+                expires: now.Add(TimeSpan.FromMinutes(config.Lifetime)),
                 signingCredentials: new SigningCredentials(JwtConfigurations.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
