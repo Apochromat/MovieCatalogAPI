@@ -31,7 +31,14 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 MoviesListModel moviesListModel = _favoriteMoviesService.getfavorites(User.Identity.Name, db);
+                _logger.LogInformation($"Succesful getting of {User.Identity.Name}'s favorites");
+
                 return moviesListModel;
+
+            } catch (KeyNotFoundException e) {
+                // Log if movie or user does not exist
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -48,7 +55,19 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _favoriteMoviesService.addfavorites(User.Identity.Name, movieId, db);
+                _logger.LogInformation($"Succesful adding to {User.Identity.Name}'s favorites: {movieId}");
+
                 return Ok();
+
+            } catch (ArgumentException e) {
+                // Log if movie already in favorites
+                _logger.LogError(e, e.Message);
+                return Conflict(e.Message);
+
+            } catch (KeyNotFoundException e) {
+                // Log if movie or user does not exist
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -65,7 +84,19 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _favoriteMoviesService.deletefavorites(User.Identity.Name, movieId, db);
+                _logger.LogInformation($"Succesful deleting from {User.Identity.Name}'s favorites: {movieId}");
+
                 return Ok();
+
+            } catch (ArgumentException e) {
+                // Log if movie is not in favorites
+                _logger.LogError(e, e.Message);
+                return Conflict(e.Message);
+
+            } catch (KeyNotFoundException e) {
+                // Log if movie or user does not exist
+                _logger.LogError(e, e.Message);
+                return NotFound(e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);

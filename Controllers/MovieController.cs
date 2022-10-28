@@ -27,9 +27,11 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         public ActionResult<MovieDetailsModel> GetMovieDetails(Guid id) {
             try {
                 var movieDetails = _movieService.getmoviedetails(id, db);
+                _logger.LogInformation($"Succesful getting movie details: {id}");
+
                 return Ok(movieDetails);
 
-            } catch (ArgumentNullException e) {
+            } catch (KeyNotFoundException e) {
                 // Catch if movie was not found in database
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);
@@ -45,9 +47,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         public ActionResult<MoviesPagedListModel> GetMoviesPage(int page = 1) {
             try {
                 var moviesPagedListModel = _movieService.getmoviespage(page, db);
+                _logger.LogInformation($"Succesful getting movie page: {page}");
+
                 return Ok(moviesPagedListModel);
 
             } catch (ArgumentException e) {
+                // Catch if page <= 0
                 _logger.LogError(e, e.Message);
                 return Problem(e.Message);
 
@@ -66,6 +71,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _movieService.createmovie(movieDetailsModel, db);
+                _logger.LogInformation($"Succesful movie creation: {movieDetailsModel.name}");
                 return Ok();
 
             } catch (Exception e) {
@@ -83,9 +89,10 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _movieService.deletemovie(id, db);
+                _logger.LogInformation($"Succesful movie removing: {id}");
                 return Ok();
 
-            } catch (ArgumentNullException e) {
+            } catch (KeyNotFoundException e) {
                 // Catch if movie was not found in database
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);
@@ -104,10 +111,17 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
-                var res = await _movieService.addmoviegenre(movieid, genreid, db);
-                return Ok(res);
+                await _movieService.addmoviegenre(movieid, genreid, db);
+                _logger.LogInformation($"Succesful adding genre {genreid} for movie {movieid}");
 
-            } catch (ArgumentNullException e) {
+                return Ok();
+
+            } catch (ArgumentException e) {
+                // Catch if movie already contain genre
+                _logger.LogError(e, e.Message);
+                return Conflict(e.Message);
+
+            } catch (KeyNotFoundException e) {
                 // Catch if movie or genre was not found in database
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);
@@ -126,10 +140,17 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
-                var res = await _movieService.deletemoviegenre(movieid, genreid, db);
-                return Ok(res);
+                await _movieService.deletemoviegenre(movieid, genreid, db);
+                _logger.LogInformation($"Succesful removing genre {genreid} for movie {movieid}");
 
-            } catch (ArgumentNullException e) {
+                return Ok();
+
+            } catch (ArgumentException e) {
+                // Catch if movie does not contain genre
+                _logger.LogError(e, e.Message);
+                return Conflict(e.Message);
+
+            } catch (KeyNotFoundException e) {
                 // Catch if movie or genre was not found in database
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);

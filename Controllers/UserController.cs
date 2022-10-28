@@ -36,6 +36,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 ProfileModel profileModel = _userService.getprofile(User.Identity.Name, db);
+                _logger.LogInformation($"Succesful getting {User.Identity.Name}'s profile information");
 
                 return Ok(profileModel);
 
@@ -62,6 +63,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _userService.modifyprofile(User.Identity.Name, profileModel, db);
+                _logger.LogInformation($"Succesful editing {User.Identity.Name}'s profile information");
 
                 return Ok("Success");
 

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Text.Json.Serialization;
 using webNET_Hits_backend_aspnet_project_1;
 using webNET_Hits_backend_aspnet_project_1.Services;
@@ -81,6 +82,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+var logger = new LoggerConfiguration()
+  .ReadFrom.Configuration(builder.Configuration)
+  .Enrich.FromLogContext()
+  .CreateLogger();
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -88,15 +96,6 @@ if (app.Environment.IsDevelopment() || true) {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-//app.Lifetime.ApplicationStarted.Register(() => {
-//    var currentTimeUTC = DateTime.UtcNow.ToString();
-//    byte[] encodedCurrentTimeUTC = System.Text.Encoding.UTF8.GetBytes(currentTimeUTC);
-//    var options = new DistributedCacheEntryOptions()
-//        .SetSlidingExpiration(TimeSpan.FromSeconds(20));
-//    app.Services.GetService<IDistributedCache>()
-//                              .Set("cachedTimeUTC", encodedCurrentTimeUTC, options);
-//});
 
 app.UseHttpsRedirection();
 
