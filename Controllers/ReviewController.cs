@@ -31,9 +31,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
-                var t = await _reviewService.addreview(User.Identity.Name, movieId, reviewModifyModel, db);
-                return Ok(t);
+                await _reviewService.addreview(User.Identity.Name, movieId, reviewModifyModel, db);
+                _logger.LogInformation($"Succesful adding review from {User.Identity.Name} for movie {movieId}");
 
+                return Ok();
+
+                // TODO: Explain
             } catch (ArgumentException e) {
                 _logger.LogError(e, e.Message);
                 return Conflict(e.Message);
@@ -57,6 +60,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _reviewService.editreview(reviewId, reviewModifyModel, db);
+                _logger.LogInformation($"Succesful editing review {reviewId} from {User.Identity.Name} for movie {movieId}");
+
                 return Ok();
 
             } catch (Exception e) {
@@ -74,8 +79,10 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _reviewService.deletereview(reviewId, db);
+                _logger.LogInformation($"Succesful deleting review {reviewId} from {User.Identity.Name} for movie {movieId}");
                 return Ok();
 
+                // TODO: catch if review does not exist
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");

@@ -23,7 +23,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             
             await db.SaveChangesAsync();
 
-            return new OkObjectResult(db.Movies.Where(x => x.MovieId == MovieId).Include(x => x.Reviews).FirstOrDefault());
+            return new OkResult();
         }
 
         public async Task<IActionResult> deletereview(Guid ReviewId, ApplicationDbContext db) {

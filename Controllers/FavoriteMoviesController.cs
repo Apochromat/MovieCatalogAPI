@@ -31,6 +31,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 MoviesListModel moviesListModel = _favoriteMoviesService.getfavorites(User.Identity.Name, db);
+                _logger.LogInformation($"Succesful getting of {User.Identity.Name}'s favorites");
+
                 return moviesListModel;
 
             } catch (Exception e) {
@@ -48,8 +50,11 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _favoriteMoviesService.addfavorites(User.Identity.Name, movieId, db);
+                _logger.LogInformation($"Succesful adding to {User.Identity.Name}'s favorites: {movieId}");
+
                 return Ok();
 
+                // TODO: Отлов, если фильм есть
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");
@@ -65,8 +70,10 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _favoriteMoviesService.deletefavorites(User.Identity.Name, movieId, db);
-                return Ok();
+                _logger.LogInformation($"Succesful deleting from {User.Identity.Name}'s favorites: {movieId}");
 
+                return Ok();
+                // TODO: Отлов, если фильма нет
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");

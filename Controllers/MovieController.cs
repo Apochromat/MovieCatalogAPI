@@ -27,6 +27,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         public ActionResult<MovieDetailsModel> GetMovieDetails(Guid id) {
             try {
                 var movieDetails = _movieService.getmoviedetails(id, db);
+                _logger.LogInformation($"Succesful getting movie details: {id}");
+
                 return Ok(movieDetails);
 
             } catch (ArgumentNullException e) {
@@ -45,6 +47,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         public ActionResult<MoviesPagedListModel> GetMoviesPage(int page = 1) {
             try {
                 var moviesPagedListModel = _movieService.getmoviespage(page, db);
+                _logger.LogInformation($"Succesful getting movie page: {page}");
+
                 return Ok(moviesPagedListModel);
 
             } catch (ArgumentException e) {
@@ -66,6 +70,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _movieService.createmovie(movieDetailsModel, db);
+                _logger.LogInformation($"Succesful movie creation: {movieDetailsModel.name}");
                 return Ok();
 
             } catch (Exception e) {
@@ -83,6 +88,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _movieService.deletemovie(id, db);
+                _logger.LogInformation($"Succesful movie removing: {id}");
                 return Ok();
 
             } catch (ArgumentNullException e) {
@@ -105,8 +111,11 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 var res = await _movieService.addmoviegenre(movieid, genreid, db);
+                _logger.LogInformation($"Succesful adding genre {genreid} for movie {movieid}");
+
                 return Ok(res);
 
+                // TODO: catch if movie already contain genre
             } catch (ArgumentNullException e) {
                 // Catch if movie or genre was not found in database
                 _logger.LogError(e, e.Message);
@@ -127,13 +136,16 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 var res = await _movieService.deletemoviegenre(movieid, genreid, db);
+                _logger.LogInformation($"Succesful removing genre {genreid} for movie {movieid}");
+
                 return Ok(res);
 
+                // TODO: catch if movie dosnt contain genre
             } catch (ArgumentNullException e) {
                 // Catch if movie or genre was not found in database
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);
-
+                // TODO: Rename
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
                 return Problem(statusCode: 500, title: "Something went wrong");

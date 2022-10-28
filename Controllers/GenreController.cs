@@ -27,6 +27,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
         public ActionResult<List<GenreModel>> GetGenres() {
             try {
                 var genreModels = _genreService.getgenres(db);
+                _logger.LogInformation($"Succesful getting genre list");
+
                 return Ok(genreModels);
 
             } catch (Exception e) {
@@ -44,6 +46,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _genreService.creategenre(genreModel, db);
+                _logger.LogInformation($"Succesful genre creation: {genreModel.name}");
+
                 return Ok();
 
             } catch (Exception e) {
@@ -62,6 +66,8 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
                 await _genreService.deletegenre(id, db);
+                _logger.LogInformation($"Succesful genre deleting: {id}");
+
                 return Ok();
 
             } catch (ArgumentNullException e) {
