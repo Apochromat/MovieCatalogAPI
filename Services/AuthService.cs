@@ -2,6 +2,8 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using System.Security.Principal;
 using webNET_Hits_backend_aspnet_project_1.Controllers;
 using webNET_Hits_backend_aspnet_project_1.Models;
@@ -20,7 +22,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
         public async Task<JsonResult> register(UserRegisterModel userRegisterModel, ApplicationDbContext db) {
             foreach (User n_user in db.Users) {
                 if (n_user.Username == userRegisterModel.userName.ToLower())
-                    throw new ArgumentException("User already exists");
+                    throw new ArgumentException("User with this nickname already exists");
+            }
+
+            foreach (User n_user in db.Users) {
+                if (n_user.EmailAddress.ToLower() == userRegisterModel.email.ToLower())
+                    throw new ArgumentException("User with this email already exists");
             }
 
             User user = new User(userRegisterModel);
@@ -31,7 +38,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
 
         public JsonResult login(LoginCredentials loginCredentials, ApplicationDbContext db) {
             var config = new JwtConfigurations(_config);
-            var identity = GetIdentity(loginCredentials.username.ToLower(), loginCredentials.password, db);
+            var identity = GetIdentity(loginCredentials.username.ToLower(), Misc.ToHash(loginCredentials.password), db);
             if (identity == null) {
                 throw new ArgumentException("Incorrect username or password");
             }

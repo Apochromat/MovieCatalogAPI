@@ -36,7 +36,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Models
             UserId = Guid.NewGuid();
             Name = userRegisterModel.name;
             Username = userRegisterModel.userName.ToLower();
-            Password = userRegisterModel.password;
+            Password = Misc.ToHash(userRegisterModel.password);
             EmailAddress = userRegisterModel.email;
             BirthDate = userRegisterModel.birthDate;
             Gender = userRegisterModel.gender;
