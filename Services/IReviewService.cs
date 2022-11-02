@@ -7,9 +7,9 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
     public interface IReviewService {
         Task<IActionResult> addreview(String Username, Guid MovieId, ReviewModifyModel reviewModifyModel, ApplicationDbContext db);
 
-        Task<IActionResult> editreview(Guid ReviewId, ReviewModifyModel reviewModifyModel, ApplicationDbContext db);
+        Task<IActionResult> editreview(String Username, Guid ReviewId, ReviewModifyModel reviewModifyModel, ApplicationDbContext db);
 
-        Task<IActionResult> deletereview(Guid ReviewId, ApplicationDbContext db);
+        Task<IActionResult> deletereview(String Username, Guid ReviewId, ApplicationDbContext db);
 
         List<ReviewModel> getreviewmodels(Guid MovieId, ApplicationDbContext db);
 

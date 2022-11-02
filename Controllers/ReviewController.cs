@@ -37,12 +37,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 return Ok();
 
             } catch (ArgumentException e) {
-                // Catch if user or movie already exists
+                // Catch if review already exists
                 _logger.LogError(e, e.Message);
                 return Conflict(e.Message);
 
             } catch (KeyNotFoundException e) {
-                // Catch if review does not exist
+                // Catch if user or movie does not exist
                 _logger.LogError(e, e.Message);
                 return NotFound(e.Message);
 
@@ -60,10 +60,15 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
-                await _reviewService.editreview(reviewId, reviewModifyModel, db);
+                await _reviewService.editreview(User.Identity.Name, reviewId, reviewModifyModel, db);
                 _logger.LogInformation($"Succesful editing review {reviewId} from {User.Identity.Name} for movie {movieId}");
 
                 return Ok();
+
+            } catch (NotSupportedException e) {
+                // Catch if user is not review author
+                _logger.LogError(e, e.Message);
+                return Problem(statusCode: 405, title: e.Message);
 
             } catch (KeyNotFoundException e) {
                 // Catch if review does not exist
@@ -84,9 +89,14 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
                 // Logout checking
                 if (await _cacheService.IsTokenDead(Request.Headers["Authorization"])) return Unauthorized("Token is expired");
 
-                await _reviewService.deletereview(reviewId, db);
+                await _reviewService.deletereview(User.Identity.Name, reviewId, db);
                 _logger.LogInformation($"Succesful deleting review {reviewId} from {User.Identity.Name} for movie {movieId}");
                 return Ok();
+
+            } catch (NotSupportedException e) {
+                // Catch if user is not review author
+                _logger.LogError(e, e.Message);
+                return Problem(statusCode:405, title: e.Message);
 
             } catch (KeyNotFoundException e) {
                 // Catch if review does not exist

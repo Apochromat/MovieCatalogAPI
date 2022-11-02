@@ -26,18 +26,28 @@ namespace webNET_Hits_backend_aspnet_project_1.Services {
             return new OkResult();
         }
 
-        public async Task<IActionResult> deletereview(Guid ReviewId, ApplicationDbContext db) {
-            Review? review = db.Reviews.Where(x => x.ReviewId == ReviewId).FirstOrDefault();
+        public async Task<IActionResult> deletereview(string Username, Guid ReviewId, ApplicationDbContext db) {
+            Review? review = db.Reviews.Where(x => x.ReviewId == ReviewId).Include(x => x.User).FirstOrDefault();
             if (review == null) { throw new KeyNotFoundException("Review not found"); }
+
+            User? user = db.Users.Where(x => x.Username == Username).FirstOrDefault();
+            if (user == null) { throw new KeyNotFoundException("User not found"); }
+
+            if (review.User != user) { throw new NotSupportedException("Вы не можете удалить отзыв другого пользоавтеля"); }
 
             db.Reviews.Remove(review);
             await db.SaveChangesAsync();
             return new OkResult();
         }
 
-        public async Task<IActionResult> editreview(Guid ReviewId, ReviewModifyModel reviewModifyModel, ApplicationDbContext db) {
-            Review? review = db.Reviews.Where(x => x.ReviewId == ReviewId).FirstOrDefault();
+        public async Task<IActionResult> editreview(string Username, Guid ReviewId, ReviewModifyModel reviewModifyModel, ApplicationDbContext db) {
+            Review? review = db.Reviews.Where(x => x.ReviewId == ReviewId).Include(x => x.User).FirstOrDefault();
             if (review == null) { throw new KeyNotFoundException("Review not found"); }
+
+            User? user = db.Users.Where(x => x.Username == Username).FirstOrDefault();
+            if (user == null) { throw new KeyNotFoundException("User not found"); }
+
+            if (review.User != user) { throw new NotSupportedException("Вы не можете модифицировать отзыв другого пользоавтеля"); }
 
             db.Attach(review);
             review.Modify(reviewModifyModel);
