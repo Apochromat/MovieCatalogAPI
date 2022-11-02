@@ -34,7 +34,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (KeyNotFoundException e) {
                 // Catch if movie was not found in database
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -54,7 +54,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Catch if page <= 0
                 _logger.LogError(e, e.Message);
-                return Problem(e.Message);
+                return Problem(statusCode: 400, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -95,7 +95,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (KeyNotFoundException e) {
                 // Catch if movie was not found in database
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -119,12 +119,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Catch if movie already contain genre
                 _logger.LogError(e, e.Message);
-                return Conflict(e.Message);
+                return Problem(statusCode: 409, title: e.Message);
 
             } catch (KeyNotFoundException e) {
                 // Catch if movie or genre was not found in database
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -148,12 +148,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Catch if movie does not contain genre
                 _logger.LogError(e, e.Message);
-                return Conflict(e.Message);
+                return Problem(statusCode: 409, title: e.Message);
 
             } catch (KeyNotFoundException e) {
                 // Catch if movie or genre was not found in database
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);

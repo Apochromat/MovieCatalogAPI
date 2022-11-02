@@ -37,7 +37,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Catch if user with this usename already exists
                 _logger.LogError(e, e.Message);
-                return Conflict(e.Message);
+                return Problem(statusCode: 409, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);

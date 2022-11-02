@@ -38,7 +38,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (KeyNotFoundException e) {
                 // Log if movie or user does not exist
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -62,12 +62,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Log if movie already in favorites
                 _logger.LogError(e, e.Message);
-                return Conflict(e.Message);
+                return Problem(statusCode: 409, title: e.Message);
 
             } catch (KeyNotFoundException e) {
                 // Log if movie or user does not exist
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -91,12 +91,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Log if movie is not in favorites
                 _logger.LogError(e, e.Message);
-                return Conflict(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (KeyNotFoundException e) {
                 // Log if movie or user does not exist
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);

@@ -39,12 +39,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (ArgumentException e) {
                 // Catch if review already exists
                 _logger.LogError(e, e.Message);
-                return Conflict(e.Message);
+                return Problem(statusCode: 409, title: e.Message);
 
             } catch (KeyNotFoundException e) {
                 // Catch if user or movie does not exist
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -73,7 +73,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (KeyNotFoundException e) {
                 // Catch if review does not exist
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -96,12 +96,12 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (NotSupportedException e) {
                 // Catch if user is not review author
                 _logger.LogError(e, e.Message);
-                return Problem(statusCode:405, title: e.Message);
+                return Problem(statusCode: 405, title: e.Message);
 
             } catch (KeyNotFoundException e) {
                 // Catch if review does not exist
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);

@@ -43,7 +43,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (KeyNotFoundException e) {
                 // Catch if "username" was not found in database
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
@@ -70,7 +70,7 @@ namespace webNET_Hits_backend_aspnet_project_1.Controllers
             } catch (KeyNotFoundException e) {
                 // Catch if "username" was not found in database
                 _logger.LogError(e, e.Message);
-                return NotFound(e.Message);
+                return Problem(statusCode: 404, title: e.Message);
 
             } catch (Exception e) {
                 _logger.LogError(e, e.Message);
