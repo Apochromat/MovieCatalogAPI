@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using webNET_Hits_backend_aspnet_project_1.Models.Enum;
 
 namespace webNET_Hits_backend_aspnet_project_1.Models.DTO {
